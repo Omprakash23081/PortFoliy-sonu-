@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import app from "./app.js";
 import connectDB from "./DB/connect.js";
 dotenv.config({ path: "./.env" });
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const port = process.env.PORT || 3000;
 
@@ -16,7 +17,13 @@ connectDB()
     console.error("Error starting server:", error);
   });
 
+app.use(SpeedInsights);
+
 //write routes
 import router from "./routes/user.routes.js";
 app.use("/api/users", router);
 app.use("/api/admin", router);
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
